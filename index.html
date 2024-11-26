@@ -3,51 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Gift Exchange</title>
+    <title>🎄 Christmas Gift Exchange 🎁</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f7f7f7;
             text-align: center;
-            padding: 20px;
+            padding: 40px;
+            color: #2d2d2d;
+            background-image: url('https://cdn.pixabay.com/photo/2018/11/25/16/29/christmas-3837889_960_720.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
         }
         h1 {
-            color: #d13438;
+            font-size: 50px;
+            color: #e74c3c;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            animation: slideIn 2s ease-out;
+        }
+        h3 {
+            font-size: 24px;
+            color: #f39c12;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
         }
         #result {
             margin-top: 20px;
-            padding: 15px;
-            border: 2px dashed #d13438;
+            padding: 20px;
+            border: 3px solid #d13438;
             background-color: #fff;
+            display: inline-block;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #result.show {
+            opacity: 1;
+        }
+        #result p {
+            font-size: 22px;
+            font-weight: bold;
         }
         .success {
-            color: green;
+            color: #27ae60;
         }
         .warning {
-            color: orange;
+            color: #e67e22;
+        }
+        .completed {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        button {
+            padding: 15px 30px;
+            background-color: #e74c3c;
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #c0392b;
+            transform: scale(1.1);
+        }
+        select {
+            padding: 12px;
+            font-size: 18px;
+            border: 2px solid #e74c3c;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+        select:focus {
+            border-color: #c0392b;
         }
         #summary {
-            margin-top: 20px;
-            padding: 15px;
-            border: 2px solid #4CAF50;
-            background-color: #fff;
+            margin-top: 40px;
+            padding: 20px;
+            border: 3px solid #2ecc71;
+            background-color: rgba(255, 255, 255, 0.85);
+            max-width: 500px;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
         ul {
-            text-align: left;
-            margin: 10px auto;
-            max-width: 300px;
+            list-style-type: none;
             padding: 0;
         }
         li {
-            list-style: none;
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            font-size: 20px;
+            border-bottom: 1px dotted #d13438;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .note {
+            font-size: 16px;
+            color: #f39c12;
+            margin-top: 20px;
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(-100px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <h1>🎄 Christmas Gift Exchange 🎄</h1>
+    <h1>🎄 Christmas Gift Exchange 🎁</h1>
     <p>Pick your name from the list to find out who you're buying a gift for!</p>
+    
     <select id="nameSelector">
         <option value="" disabled selected>Choose your name</option>
         <option value="Mamkhul'Suzie">Mamkhul'Suzie</option>
@@ -63,33 +137,40 @@
         <option value="Nontando">Nontando</option>
         <option value="Uminathi">Uminathi</option>
     </select>
-    <button onclick="assignGift()">Get Your Person!</button>
-    <div id="result"></div>
     
-    <div id="summary">
+    <button onclick="assignGift()">Get Your Person!</button>
+
+    <div id="result"></div>
+
+    <!--<div id="summary">
         <h3>🎁 Gift Exchange Summary 🎁</h3>
         <ul id="summaryList">
-            <!-- Assignments will appear here -->
+            <!-- Assignment summary will be displayed here
         </ul>
+    </div>-->
+
+    <div class="note">
+        <p>Note: The results are visible only after you pick your gift recipient! 🎅</p>
     </div>
     
     <script>
-        const names = [
-            "Mamkhul'Suzie",
-            "Babomkhulu",
-            "Mamkhul'Pinkie",
-            "FJ",
-            "OZ",
-            "Siphiwe",
-            "Siyathokoza",
-            "Phethile",
-            "Musa",
-            "Elihle",
-            "Nontando",
-            "Uminathi"
-        ];
-        const assignedPairs = {}; // Tracks who has been assigned to whom
-        const assignedTo = new Set(); // Tracks names that have already been chosen
+        // Hardcoded name pairings
+        const assignments = {
+            "Mamkhul'Suzie": "Mamkhul'Pinkie",
+            "Babomkhulu": "FJ",
+            "Mamkhul'Pinkie": "Siphiwe",
+            "FJ": "Elihle",
+            "OZ": "Siyathokoza",
+            "Siphiwe": "Uminathi",
+            "Siyathokoza": "Babomkhulu",
+            "Phethile": "OZ",
+            "Musa": "Nontando",
+            "Elihle": "Phethile",
+            "Nontando": "Mamkhul'Suzie",
+            "Uminathi": "Musa"
+        };
+
+        const assignedPairs = {}; // Keeps track of who has been assigned a gift
 
         function assignGift() {
             const userName = document.getElementById("nameSelector").value;
@@ -99,30 +180,23 @@
                 return;
             }
 
+            // Check if the person has already received their assignment
             if (assignedPairs[userName]) {
                 document.getElementById("result").innerHTML = `<p class="warning">${userName}, you've already received your assignment: ${assignedPairs[userName]}. No peeking again! 🎅</p>`;
                 return;
             }
 
-            const unassignedNames = names.filter(name => !assignedTo.has(name) && name !== userName);
-
-            if (unassignedNames.length === 0) {
-                document.getElementById("result").innerHTML = "<p class='warning'>All names have been assigned. 🎁</p>";
-                return;
-            }
-
-            const randomIndex = Math.floor(Math.random() * unassignedNames.length);
-            const selected = unassignedNames[randomIndex];
-
-            // Save the pair
+            // Assign the name based on the hardcoded assignments
+            const selected = assignments[userName];
             assignedPairs[userName] = selected;
-            assignedTo.add(selected);
 
-            // Display individual result
-            document.getElementById("result").innerHTML = `<p class="success">${userName}, you're buying a gift for ${selected}! 🎄</p>`;
+            // Display the assignment for the user
+            const resultElement = document.getElementById("result");
+            resultElement.innerHTML = `<p class="success">${userName}, you're buying a gift for ${selected}! 🎄</p>`;
+            resultElement.classList.add('show');
 
             // Update the summary list
-            updateSummary(userName, selected);
+           // updateSummary(userName, selected);
         }
 
         function updateSummary(userName, selected) {
@@ -130,6 +204,7 @@
             const listItem = document.createElement("li");
             listItem.textContent = `${userName} is buying a gift for ${selected}`;
             summaryList.appendChild(listItem);
+            listItem.classList.add('completed');
         }
     </script>
 </body>
