@@ -46,7 +46,7 @@
     </style>
 </head>
 <body>
-    <h1>🎄 Family Christmas Gift Exchange 2024🎄</h1>
+    <h1>🎄 Christmas Gift Exchange 🎄</h1>
     <p>Pick your name from the list to find out who you're buying a gift for!</p>
     <select id="nameSelector">
         <option value="" disabled selected>Choose your name</option>
@@ -67,7 +67,7 @@
     <div id="result"></div>
     
     <div id="summary">
-        <h3>🎁 Family Christmas Gift Exchange Summary 🎁</h3>
+        <h3>🎁 Gift Exchange Summary 🎁</h3>
         <ul id="summaryList">
             <!-- Assignments will appear here -->
         </ul>
@@ -118,4 +118,19 @@
             assignedPairs[userName] = selected;
             assignedTo.add(selected);
 
-            // Display i
+            // Display individual result
+            document.getElementById("result").innerHTML = `<p class="success">${userName}, you're buying a gift for ${selected}! 🎄</p>`;
+
+            // Update the summary list
+            updateSummary(userName, selected);
+        }
+
+        function updateSummary(userName, selected) {
+            const summaryList = document.getElementById("summaryList");
+            const listItem = document.createElement("li");
+            listItem.textContent = `${userName} is buying a gift for ${selected}`;
+            summaryList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>
