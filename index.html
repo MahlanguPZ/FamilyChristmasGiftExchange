@@ -60,6 +60,8 @@
         <option value="Phethile">Phethile</option>
         <option value="Musa">Musa</option>
         <option value="Elihle">Elihle</option>
+        <option value="Nontando">Nontando</option>
+        <option value="Uminathi">Uminathi</option>
     </select>
     <button onclick="assignGift()">Get Your Person!</button>
     <div id="result"></div>
@@ -72,8 +74,22 @@
     </div>
     
     <script>
-        const names = ["Mamkhul'Suzie", "Babomkhulu", "Mamkhul'Pinkie", "FJ", "OZ", "Siphiwe", "Siyathokoza", "Phethile", "Musa", "Elihle"];
-        const assignedPairs = {}; // To track who has been assigned to whom
+        const names = [
+            "Mamkhul'Suzie",
+            "Babomkhulu",
+            "Mamkhul'Pinkie",
+            "FJ",
+            "OZ",
+            "Siphiwe",
+            "Siyathokoza",
+            "Phethile",
+            "Musa",
+            "Elihle",
+            "Nontando",
+            "Uminathi"
+        ];
+        const assignedPairs = {}; // Tracks who has been assigned to whom
+        const assignedTo = new Set(); // Tracks names that have already been chosen
 
         function assignGift() {
             const userName = document.getElementById("nameSelector").value;
@@ -88,7 +104,7 @@
                 return;
             }
 
-            const unassignedNames = names.filter(name => !Object.values(assignedPairs).includes(name) && name !== userName);
+            const unassignedNames = names.filter(name => !assignedTo.has(name) && name !== userName);
 
             if (unassignedNames.length === 0) {
                 document.getElementById("result").innerHTML = "<p class='warning'>All names have been assigned. 🎁</p>";
@@ -100,20 +116,6 @@
 
             // Save the pair
             assignedPairs[userName] = selected;
+            assignedTo.add(selected);
 
-            // Display individual result
-            document.getElementById("result").innerHTML = `<p class="success">${userName}, you're buying a gift for ${selected}! 🎄</p>`;
-
-            // Update the summary list
-            updateSummary(userName, selected);
-        }
-
-        function updateSummary(userName, selected) {
-            const summaryList = document.getElementById("summaryList");
-            const listItem = document.createElement("li");
-            listItem.textContent = `${userName} is buying a gift for ${selected}`;
-            summaryList.appendChild(listItem);
-        }
-    </script>
-</body>
-</html>
+            // Display i
