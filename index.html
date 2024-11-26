@@ -8,7 +8,126 @@
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background: linear-gradient(to bottom, #ffecd2, #fcb69f);
+            background: linear-gra<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Gift Exchange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #d13438;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #d13438;
+            background-color: #fff;
+        }
+        .success {
+            color: green;
+        }
+        .warning {
+            color: orange;
+        }
+        #summary {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            background-color: #fff;
+        }
+        ul {
+            text-align: left;
+            margin: 10px auto;
+            max-width: 300px;
+            padding: 0;
+        }
+        li {
+            list-style: none;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎄 Family Christmas Gift Exchange 2024🎄</h1>
+    <p>Pick your name from the list to find out who you're buying a gift for!</p>
+    <select id="nameSelector">
+        <option value="" disabled selected>Choose your name</option>
+        <option value="Mamkhul'Suzie">Mamkhul'Suzie</option>
+        <option value="Babomkhulu">Babomkhulu</option>
+        <option value="Mamkhul'Pinkie">Mamkhul'Pinkie</option>
+        <option value="FJ">FJ</option>
+        <option value="OZ">OZ</option>
+        <option value="Siphiwe">Siphiwe</option>
+        <option value="Siyathokoza">Siyathokoza</option>
+        <option value="Phethile">Phethile</option>
+        <option value="Musa">Musa</option>
+        <option value="Elihle">Elihle</option>
+    </select>
+    <button onclick="assignGift()">Get Your Person!</button>
+    <div id="result"></div>
+    
+    <div id="summary">
+        <h3>🎁 Family Christmas Gift Exchange Summary 🎁</h3>
+        <ul id="summaryList">
+            <!-- Assignments will appear here -->
+        </ul>
+    </div>
+    
+    <script>
+        const names = ["Mamkhul'Suzie", "Babomkhulu", "Mamkhul'Pinkie", "FJ", "OZ", "Siphiwe", "Siyathokoza", "Phethile", "Musa", "Elihle"];
+        const assignedPairs = {}; // To track who has been assigned to whom
+
+        function assignGift() {
+            const userName = document.getElementById("nameSelector").value;
+
+            if (!userName) {
+                document.getElementById("result").innerHTML = "<p class='warning'>Please select your name first!</p>";
+                return;
+            }
+
+            if (assignedPairs[userName]) {
+                document.getElementById("result").innerHTML = `<p class="warning">${userName}, you've already received your assignment: ${assignedPairs[userName]}. No peeking again! 🎅</p>`;
+                return;
+            }
+
+            const unassignedNames = names.filter(name => !Object.values(assignedPairs).includes(name) && name !== userName);
+
+            if (unassignedNames.length === 0) {
+                document.getElementById("result").innerHTML = "<p class='warning'>All names have been assigned. 🎁</p>";
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * unassignedNames.length);
+            const selected = unassignedNames[randomIndex];
+
+            // Save the pair
+            assignedPairs[userName] = selected;
+
+            // Display individual result
+            document.getElementById("result").innerHTML = `<p class="success">${userName}, you're buying a gift for ${selected}! 🎄</p>`;
+
+            // Update the summary list
+            updateSummary(userName, selected);
+        }
+
+        function updateSummary(userName, selected) {
+            const summaryList = document.getElementById("summaryList");
+            const listItem = document.createElement("li");
+            listItem.textContent = `${userName} is buying a gift for ${selected}`;
+            summaryList.appendChild(listItem);
+        }
+    </script>
+</body>
+</html>
+dient(to bottom, #ffecd2, #fcb69f);
             color: #333;
             margin: 0;
             padding: 0;
